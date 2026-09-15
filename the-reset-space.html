@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Reset Space — understand stress, try what helps, let go of the rest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top: #3d4356;
+    --sky-bottom: #5b6478;
+    --sun-color: #9aa3ad;
+    --ink: #f2ede0;
+    --ink-dim: #c9c4b6;
+    --ember: #d9683f;
+    --ember-bright: #f4924f;
+    --sage: #8fae87;
+    --paper: #efe6d2;
+    --paper-shadow: #d9cba6;
+    --rule: rgba(242,237,224,0.16);
+    --panel-bg: rgba(13,16,20,0.72);
+    --max: 720px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+
+  body{
+    margin:0; color: var(--ink); font-family:'Inter', sans-serif;
+    line-height:1.6; -webkit-font-smoothing: antialiased; background:#22262d;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:500; line-height:1.15; margin:0; }
+  a{ color:inherit; }
+  ::selection{ background: var(--ember); color:#161616; }
+  :focus-visible{ outline: 2px solid var(--ember-bright); outline-offset:3px; }
+  .wrap{ max-width: var(--max); margin:0 auto; padding:0 28px; }
+
+  /* ================= Sky scene ================= */
+  .sky-scene{ position:fixed; inset:0; z-index:-1; overflow:hidden; background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom)); }
+  .sun{ position:absolute; width:90px; height:90px; border-radius:50%; top:60%; left:15%; background: var(--sun-color); box-shadow: 0 0 70px 20px color-mix(in srgb, var(--sun-color) 55%, transparent); }
+  .cloud{ position:absolute; background: rgba(255,255,255,0.55); border-radius:100px; filter: blur(1px); }
+  .cloud::before, .cloud::after{ content:''; position:absolute; background:inherit; border-radius:100px; }
+  #cloud1{ width:160px; height:46px; top:10%; left:8%; }
+  #cloud1::before{ width:80px; height:60px; top:-30px; left:20px; }
+  #cloud1::after{ width:60px; height:44px; top:-18px; left:90px; }
+  #cloud2{ width:120px; height:36px; top:18%; left:60%; }
+  #cloud2::before{ width:60px; height:44px; top:-22px; left:14px; }
+  #cloud2::after{ width:50px; height:34px; top:-14px; left:66px; }
+  #cloud3{ width:100px; height:30px; top:6%; left:38%; }
+  #cloud3::before{ width:50px; height:36px; top:-18px; left:12px; }
+  .bird{ position:absolute; width:22px; height:12px; }
+  .bird svg{ width:100%; height:100%; }
+  #bird1{ top:22%; left:-5%; animation: flyAcross 26s linear infinite; }
+  #bird2{ top:30%; left:-5%; animation: flyAcross 32s linear infinite; animation-delay:6s; }
+  @keyframes flyAcross{ from{ transform:translateX(0);} to{ transform:translateX(115vw);} }
+  @media (prefers-reduced-motion: reduce){ .bird{ animation:none !important; opacity:0 !important; } }
+  .hills{ position:absolute; bottom:-2px; left:0; width:100%; }
+
+  /* ================= Nav ================= */
+  header.top{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; margin:0 auto; padding:28px 28px 0; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Fraunces', serif; font-size:1.15rem; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+  nav.links{ display:flex; gap:22px; font-size:0.92rem; color: var(--ink-dim); }
+  nav.links a{ text-decoration:none; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+  nav.links a:hover{ color: var(--ink); }
+  @media (max-width:620px){ nav.links{ gap:12px; font-size:0.8rem; } }
+
+  /* ================= Hero ================= */
+  .hero{ max-width:760px; margin:0 auto; padding:64px 28px 70px; }
+  .hero h1{ font-size: clamp(2rem, 4vw, 2.9rem); letter-spacing:-0.01em; text-shadow: 0 4px 24px rgba(0,0,0,0.45); }
+  .hero p.lede{ margin-top:18px; max-width:46ch; color: var(--ink-dim); font-size:1.03rem; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+  .sky-note{ margin-top:14px; font-size:0.85rem; color: var(--ink-dim); opacity:0.85; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+  .scroll-cue{ margin-top:28px; display:inline-flex; align-items:center; gap:8px; font-size:0.9rem; color: var(--ember-bright); text-decoration:none; border-bottom:1px solid rgba(244,146,79,0.45); padding-bottom:2px; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+
+  /* ================= Section shell / panels ================= */
+  section{ padding:64px 0; }
+  .panel{ background: var(--panel-bg); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); border-top:1px solid rgba(255,255,255,0.09); border-bottom:1px solid rgba(255,255,255,0.09); padding:50px 0; }
+  section h2{ font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom:14px; }
+  .section-intro{ color: var(--ink-dim); max-width:60ch; margin:0 0 30px; }
+
+  #understand p{ max-width:64ch; margin:0 0 18px; }
+  #understand p:last-child{ margin-bottom:0; }
+
+  /* ================= Help Ember (mini-game) ================= */
+  #help .wrap{ max-width: 640px; }
+  .fox-stage{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .fox-holder{ position:relative; width:240px; max-width:80vw; }
+  @media (prefers-reduced-motion: reduce){ .fox-holder{ animation:none !important; } }
+  .fx-layer{ position:absolute; inset:0; pointer-events:none; overflow:visible; }
+  .fx-particle{ position:absolute; font-size:15px; line-height:1; animation: floatUp 1.6s ease-out forwards; }
+  .fx-zzz{ color:#dfe4ea; font-family:'Fraunces', serif; font-weight:600; font-size:17px; }
+  .fx-heart{ color:#e08a9a; }
+  .fx-water{ width:8px; height:10px; background:#6fb3d9; border-radius:50% 50% 50% 0; transform: rotate(45deg); }
+  @keyframes floatUp{ 0%{ transform: translateY(0) scale(0.8); opacity:0; } 18%{ opacity:1; } 100%{ transform: translateY(-72px) scale(1.1); opacity:0; } }
+
+  .ear{ transform-box: fill-box; transform-origin:50% 100%; transition: transform 0.6s ease; }
+  .fox.stressed .ear-left{ transform: rotate(-13deg); }
+  .fox.stressed .ear-right{ transform: rotate(13deg); }
+  .eye-calm{ opacity:1; transition: opacity 0.4s; }
+  .eye-stressed{ opacity:0; transition: opacity 0.4s; }
+  .fox.stressed .eye-calm{ opacity:0; }
+  .fox.stressed .eye-stressed{ opacity:1; }
+  #foxBelly{ transform-box: fill-box; transform-origin:center; animation: ambientBreath 3s ease-in-out infinite; }
+  @keyframes ambientBreath{ 0%,100%{ transform: scaleY(1); } 50%{ transform: scaleY(1.08); } }
+  .fox.stretching{ animation: stretchPulse 1s ease-in-out; }
+  @keyframes stretchPulse{ 0%{ transform:scale(1,1); } 40%{ transform: scale(1.14,0.9); } 100%{ transform: scale(1,1); } }
+  .fox{ transform-box: fill-box; transform-origin:50% 60%; }
+
+  .breath-caption{ font-family:'Fraunces', serif; font-size:1rem; min-height:1.4em; margin-top:6px; text-align:center; }
+
+  .meter-wrap{ width:100%; max-width:360px; margin: 18px 0 22px; }
+  .meter-label{ display:flex; justify-content:space-between; font-size:0.82rem; color: var(--ink-dim); margin-bottom:6px; }
+  .meter-label span:last-child{ color: var(--ink); font-weight:500; }
+  .meter-track{ height:10px; border-radius:6px; background: rgba(0,0,0,0.3); overflow:hidden; }
+  .meter-fill{ height:100%; width:80%; border-radius:6px; background: var(--ember); transition: width 0.7s ease, background 0.7s ease; }
+
+  .help-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+  .help-btn{
+    font-family:'Inter', sans-serif; font-size:0.85rem; font-weight:500; color: var(--ink);
+    background: rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.16);
+    padding:9px 16px; border-radius:20px; cursor:pointer; transition: opacity 0.2s ease, transform 0.15s ease;
+  }
+  .help-btn:hover:not(:disabled){ transform: translateY(-1px); }
+  .help-btn:disabled{ opacity:0.35; cursor:default; }
+
+  .help-msg{ min-height:1.4em; margin-top:16px; font-family:'Fraunces', serif; font-size:1rem; color: var(--sage); opacity:0; transition: opacity 0.6s ease; text-align:center; }
+  .help-msg.show{ opacity:1; }
+  .help-reset{
+    margin-top:10px; font-size:0.82rem; color: var(--ink-dim); background:none; border:1px solid var(--rule);
+    padding:7px 14px; border-radius:16px; cursor:pointer; display:none;
+  }
+  .help-reset.show{ display:inline-block; }
+
+  /* ================= Techniques ================= */
+  .tech-group{ margin-bottom:44px; }
+  .tech-group:last-child{ margin-bottom:0; }
+  .tech-group h3{ font-size:1.02rem; color: var(--ember-bright); font-weight:500; margin-bottom:4px; }
+  .tech-sub{ color: var(--ink-dim); font-size:0.9rem; margin:0 0 16px; }
+
+  .ground-progress{ font-size:0.82rem; color: var(--ink-dim); margin:0 0 6px; }
+  ul.grounding{ list-style:none; margin:0; padding:0; border-top:1px solid var(--rule); }
+  ul.grounding li{ display:flex; gap:14px; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; }
+  ul.grounding li .box{ flex-shrink:0; width:20px; height:20px; margin-top:2px; border:1.5px solid var(--ember-bright); border-radius:4px; display:flex; align-items:center; justify-content:center; }
+  ul.grounding li .box svg{ opacity:0; width:12px; height:12px; }
+  ul.grounding li.done .box{ background: var(--ember-bright); }
+  ul.grounding li.done .box svg{ opacity:1; }
+  ul.grounding li.done .txt strong, ul.grounding li.done .txt span{ opacity:0.5; text-decoration: line-through; }
+  ul.grounding li .num{ font-family:'Fraunces', serif; color: var(--ember-bright); width:1.3em; flex-shrink:0; }
+  ul.grounding li .desc{ color: var(--ink-dim); }
+
+  .tech-details{ border-top:1px solid var(--rule); }
+  .tech-details details{ border-bottom:1px solid var(--rule); }
+  .tech-details summary{ list-style:none; cursor:pointer; padding:14px 0; display:flex; gap:12px; align-items:baseline; justify-content:space-between; }
+  .tech-details summary::-webkit-details-marker{ display:none; }
+  .tech-details summary .s-main{ display:flex; gap:12px; align-items:baseline; }
+  .tech-details summary strong{ font-weight:600; }
+  .tech-details summary .desc{ color: var(--ink-dim); }
+  .tech-details summary .chev{ flex-shrink:0; color: var(--ink-dim); font-size:0.85rem; transition: transform 0.2s ease; }
+  .tech-details details[open] summary .chev{ transform: rotate(45deg); }
+  .tech-details .tip{ margin:0 0 16px; padding:12px 14px; background: rgba(143,174,135,0.1); border-left:2px solid var(--sage); color: var(--ink-dim); font-size:0.92rem; }
+
+  /* ================= Release / journal — fire ================= */
+  .release-head{ max-width:62ch; }
+  .release-head p{ color: var(--ink-dim); }
+  .paper-area{ margin-top:32px; position:relative; }
+  .paper{ position:relative; background: var(--paper); border-radius:3px; box-shadow: 0 18px 40px -18px rgba(0,0,0,0.55), 0 0 0 1px var(--paper-shadow); padding:4px; overflow:hidden; }
+  .paper::before{ content:''; position:absolute; inset:0; background-image: radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px); background-size:3px 3px; pointer-events:none; z-index:0; }
+  textarea#journalInput{ position:relative; z-index:1; width:100%; min-height:240px; resize:vertical; background:transparent; border:none; outline:none; color:#2c2717; font-family:'Fraunces', serif; font-size:1.05rem; line-height:1.7; padding:26px 28px; caret-color: var(--ember); }
+  textarea#journalInput::placeholder{ color:#8a8163; }
+
+  .burnt-text{ display:none; position:absolute; inset:0; z-index:1; padding:26px 28px; font-family:'Fraunces', serif; font-size:1.05rem; line-height:1.7; color:#2c2717; white-space:pre-wrap; word-break:break-word; overflow:hidden; }
+  .burnt-text.burning{ display:block; }
+
+  .char-band{ position:absolute; left:0; right:0; height:22px; z-index:2; opacity:0; pointer-events:none; mix-blend-mode: multiply; background: linear-gradient(to bottom, rgba(20,12,6,0), rgba(20,12,6,0.95)); }
+  .char-band.active{ opacity:1; }
+
+  .flame-layer{ position:absolute; left:0; right:0; height:38px; z-index:3; opacity:0; pointer-events:none; }
+  .flame-layer.active{ opacity:1; }
+  .flame-tongue{
+    position:absolute; bottom:0; width:24px; height:32px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: radial-gradient(circle at 50% 78%, #fff6c8 0%, #ffb347 42%, #e2632c 74%, rgba(226,99,44,0) 100%);
+    filter: drop-shadow(0 0 8px rgba(255,150,60,0.6));
+    transform-origin: bottom center;
+  }
+  .flame-tongue.t1{ left:6%; animation: flick 0.5s ease-in-out infinite alternate; }
+  .flame-tongue.t2{ left:26%; width:20px; height:28px; animation: flick 0.62s ease-in-out infinite alternate; animation-delay:0.1s; }
+  .flame-tongue.t3{ left:48%; width:30px; height:38px; animation: flick 0.46s ease-in-out infinite alternate; animation-delay:0.05s; }
+  .flame-tongue.t4{ left:70%; width:20px; height:28px; animation: flick 0.58s ease-in-out infinite alternate; animation-delay:0.16s; }
+  .flame-tongue.t5{ left:88%; animation: flick 0.53s ease-in-out infinite alternate; animation-delay:0.22s; }
+  @keyframes flick{ 0%{ transform: scaleY(0.82) rotate(-3deg); } 100%{ transform: scaleY(1.18) rotate(3deg); } }
+  @media (prefers-reduced-motion: reduce){ .flame-tongue{ animation: none !important; } }
+
+  .particles{ position:absolute; inset:0; z-index:4; pointer-events:none; overflow:visible; }
+  .ember-particle{ position:absolute; bottom:0; width:3px; height:3px; border-radius:50%; background: var(--ember-bright); box-shadow: 0 0 6px 1px rgba(244,146,79,0.9); animation: riseFadeEmber 1s ease-out forwards; }
+  @keyframes riseFadeEmber{ 0%{ transform: translateY(0) translateX(0) scale(1); opacity:1; } 100%{ transform: translateY(-60px) translateX(var(--dx,0px)) scale(0.4); opacity:0; } }
+  .smoke-particle{ position:absolute; bottom:0; width:10px; height:10px; border-radius:50%; background: rgba(210,205,195,0.5); filter: blur(3px); animation: smokeRise 1.8s ease-out forwards; }
+  @keyframes smokeRise{ 0%{ transform: translate(0,0) scale(0.6); opacity:0.5; } 100%{ transform: translate(var(--dx,10px), -130px) scale(2); opacity:0; } }
+
+  .ash-overlay{ position:absolute; inset:0; z-index:5; pointer-events:none; opacity:0; background: radial-gradient(ellipse at 50% 85%, rgba(40,35,30,0.4), transparent 70%); transition: opacity 1.4s ease; }
+  .ash-overlay.show{ opacity:1; }
+
+  .paper.shake{ animation: shake 0.4s; }
+  @keyframes shake{ 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-6px); } 75%{ transform:translateX(6px); } }
+
+  .release-controls{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:18px; }
+  button#burnBtn{ font-family:'Inter', sans-serif; font-weight:600; font-size:0.95rem; color:#161b21; background: linear-gradient(180deg, var(--ember-bright), var(--ember)); border:none; padding:13px 26px; border-radius:3px; cursor:pointer; box-shadow: 0 6px 18px -6px rgba(217,104,63,0.6); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  button#burnBtn:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px -6px rgba(217,104,63,0.7); }
+  button#burnBtn:disabled{ opacity:0.6; cursor:default; }
+  .privacy-note{ font-size:0.85rem; color: var(--ink-dim); max-width:40ch; margin:0; }
+  .release-msg{ min-height:1.4em; margin-top:18px; font-family:'Fraunces', serif; font-size:1rem; color: var(--sage); opacity:0; transition: opacity 0.6s ease; }
+  .release-msg.show{ opacity:1; }
+  .visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+  /* ================= Footer ================= */
+  footer{ padding:46px 0 60px; }
+  footer p{ color: var(--ink-dim); font-size:0.88rem; max-width:60ch; margin:0 0 6px; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+  footer .signoff{ color: var(--ink); font-family:'Fraunces', serif; margin-top:16px; font-size:1rem; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+</style>
+</head>
+<body>
+
+<div class="sky-scene" aria-hidden="true">
+  <div class="sun" id="sunEl"></div>
+  <div class="cloud" id="cloud1"></div>
+  <div class="cloud" id="cloud2"></div>
+  <div class="cloud" id="cloud3"></div>
+  <div class="bird" id="bird1"><svg viewBox="0 0 24 12"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" fill="none"/></svg></div>
+  <div class="bird" id="bird2"><svg viewBox="0 0 24 12"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" stroke="rgba(255,255,255,0.6)" stroke-width="1.6" fill="none"/></svg></div>
+  <svg class="hills" viewBox="0 0 1200 200" preserveAspectRatio="none">
+    <path d="M0 130 Q200 60 420 120 Q650 180 900 100 Q1080 50 1200 110 L1200 200 L0 200 Z" fill="#20222b" opacity="0.85"/>
+    <path d="M0 170 Q250 120 500 165 Q750 200 1000 150 Q1120 130 1200 160 L1200 200 L0 200 Z" fill="#15161c"/>
+  </svg>
+</div>
+
+<header class="top">
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2C12 2 6 9.5 6 14.5C6 18.09 8.69 21 12 21C15.31 21 18 18.09 18 14.5C18 9.5 12 2 12 2Z" stroke="#f4924f" stroke-width="1.4"/>
+    </svg>
+    The Reset Space
+  </div>
+  <nav class="links">
+    <a href="#help">Help Ember</a>
+    <a href="#understand">Understand</a>
+    <a href="#techniques">Techniques</a>
+    <a href="#release">Release</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Stress isn't a flaw in you. It's a signal.</h1>
+  <p class="lede">The Reset Space is a quiet place to understand what's happening in your body, pick up a few techniques that actually help, and set down whatever's sitting too heavy to hold today.</p>
+  <p class="sky-note">Notice the sky above — it settles the further you read.</p>
+  <a class="scroll-cue" href="#help">Meet Ember ↓</a>
+</div>
+
+<section id="help">
+  <div class="panel">
+    <div class="wrap">
+      <h2>Help Ember cope</h2>
+      <p class="section-intro">Ember is a decent stand-in for wherever your own stress shows up. Try a few different things on her — no single fix works every time, for a fox or for you.</p>
+
+      <div class="fox-stage">
+        <div class="fox-holder" id="foxHolder">
+          <svg class="fox stressed" id="foxSvg" viewBox="0 0 260 200" width="100%">
+            <ellipse cx="130" cy="182" rx="88" ry="10" fill="rgba(0,0,0,0.28)"/>
+            <ellipse cx="150" cy="112" rx="98" ry="66" fill="var(--fox-dark, #a85f38)" transform="rotate(-12 150 112)"/>
+            <ellipse cx="205" cy="80" rx="16" ry="10" fill="#f1e4cf" transform="rotate(-30 205 80)"/>
+            <ellipse cx="112" cy="122" rx="66" ry="48" fill="var(--fox-body, #cf8a5a)"/>
+            <ellipse id="foxBelly" cx="98" cy="138" rx="32" ry="20" fill="#f1e4cf"/>
+            <circle cx="58" cy="92" r="30" fill="var(--fox-body, #cf8a5a)"/>
+            <g class="ear ear-left">
+              <polygon points="34,72 44,40 56,70" fill="var(--fox-dark, #a85f38)"/>
+              <polygon points="34,72 41,50 49,69" fill="#f1e4cf"/>
+            </g>
+            <g class="ear ear-right">
+              <polygon points="70,68 84,42 90,72" fill="var(--fox-dark, #a85f38)"/>
+              <polygon points="72,68 82,50 87,71" fill="#f1e4cf"/>
+            </g>
+            <path class="eye-calm" d="M40 96 Q47 100 54 96" stroke="#3a2418" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <g class="eye-stressed">
+              <path d="M37 87 L48 83" stroke="#3a2418" stroke-width="2.2" stroke-linecap="round"/>
+              <ellipse cx="46" cy="95" rx="4" ry="5.4" fill="#3a2418"/>
+            </g>
+            <ellipse cx="26" cy="102" rx="7" ry="5" fill="var(--fox-dark, #a85f38)"/>
+            <ellipse cx="20" cy="101" rx="3" ry="2.4" fill="#3a2418"/>
+          </svg>
+          <div class="fx-layer" id="fxLayer"></div>
+        </div>
+        <p class="breath-caption" id="helpCaption">&nbsp;</p>
+
+        <div class="meter-wrap">
+          <div class="meter-label"><span>Ember's stress</span><span id="stressState">Overwhelmed</span></div>
+          <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+        </div>
+
+        <div class="help-actions">
+          <button class="help-btn" data-action="breathe">Take a deep breath</button>
+          <button class="help-btn" data-action="water">Give water</button>
+          <button class="help-btn" data-action="rest">Let it rest</button>
+          <button class="help-btn" data-action="stretch">Stretch</button>
+          <button class="help-btn" data-action="reassure">Reassure</button>
+        </div>
+
+        <p class="help-msg" id="helpMsg" aria-live="polite"></p>
+        <button class="help-reset" id="helpReset" type="button">Let stress build again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="understand">
+  <div class="panel">
+    <div class="wrap">
+      <h2>What's actually happening</h2>
+      <p>When your brain senses a threat — a deadline, a hard conversation, a message you're dreading — it doesn't wait to check the facts. It floods your body with cortisol and adrenaline, the same chemicals that helped a distant ancestor outrun a predator. Your heart rate climbs, your muscles tighten, your thinking narrows to the immediate problem. That's stress, and it's meant to be short.</p>
+      <p>Anxiety is what happens when that alarm keeps ringing after the danger has passed, or rings for things that were never physically dangerous at all. Your body can't always tell the difference between a real threat and a looping thought.</p>
+      <p>None of this means something is wrong with you. It means your nervous system is doing an old job in a much newer world. And a system that can be switched on this easily can also, with practice, be taught to switch back down.</p>
+    </div>
+  </div>
+</section>
+
+<section id="techniques">
+  <div class="panel">
+    <div class="wrap">
+      <h2>Things that help</h2>
+      <p class="section-intro">Not everything works for everyone. Treat this as a menu, not a checklist — except the one below, which actually is.</p>
+
+      <div class="tech-group">
+        <h3>Right now</h3>
+        <p class="tech-sub">For when it's loud in your body and you need it to quiet down in the next few minutes. Tap each one off as you go.</p>
+        <p class="ground-progress" id="groundProgress">0 of 5 noticed</p>
+        <ul class="grounding" id="groundingList">
+          <li data-item="1"><span class="num">1</span><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#161b21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><strong>Name 5 things you can see.</strong> <span class="desc">Slow, specific, out loud if you can.</span></span></li>
+          <li data-item="2"><span class="num">2</span><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#161b21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><strong>4 things you can touch.</strong> <span class="desc">Notice texture, temperature, weight.</span></span></li>
+          <li data-item="3"><span class="num">3</span><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#161b21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><strong>3 things you can hear.</strong> <span class="desc">Even the hum of a fridge counts.</span></span></li>
+          <li data-item="4"><span class="num">4</span><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#161b21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><strong>2 things you can smell.</strong> <span class="desc">If nothing's obvious, that's fine too.</span></span></li>
+          <li data-item="5"><span class="num">5</span><span class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#161b21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="txt"><strong>1 thing you can taste.</strong> <span class="desc">A sip of water works.</span></span></li>
+        </ul>
+      </div>
+
+      <div class="tech-group">
+        <h3>Every day</h3>
+        <p class="tech-sub">Small, boring habits that lower your baseline over weeks, not minutes. Tap one open for a way to start.</p>
+        <div class="tech-details">
+          <details>
+            <summary><span class="s-main"><strong>Keep a consistent sleep and wake time.</strong><span class="desc">— your nervous system settles faster on a fixed schedule.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Pick one wake-up time and hold it even on weekends for two weeks. The bedtime will follow on its own once the wake time is fixed.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Get sunlight within an hour of waking.</strong><span class="desc">— it helps set the clock that regulates cortisol.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Step outside for 5 minutes with your coffee instead of drinking it at the counter. No sunglasses needed unless it's harsh.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Move your body, even briefly.</strong><span class="desc">— a walk metabolizes stress hormones your body already made.</span></span><span class="chev">+</span></summary>
+            <p class="tip">A 10-minute walk after a stressful call or meeting does more than an hour of thinking about it will.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Cut caffeine off by early afternoon.</strong><span class="desc">— it can mimic anxiety's physical symptoms almost exactly.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Try swapping your 2pm coffee for water or tea for a week and see if your evening jitters change.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Give your last hour before bed to something quiet.</strong><span class="desc">— scrolling keeps the alarm system half-lit.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Charge your phone outside the bedroom for a few nights and notice what you reach for instead.</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="tech-group">
+        <h3>Over time</h3>
+        <p class="tech-sub">Slower work that changes your relationship to stress itself.</p>
+        <div class="tech-details">
+          <details>
+            <summary><span class="s-main"><strong>Talk to a therapist or counselor.</strong><span class="desc">— trained support does something a webpage can't.</span></span><span class="chev">+</span></summary>
+            <p class="tip">If cost or access is the barrier, ask your doctor about sliding-scale clinics or community mental health centers near you.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Write it down regularly.</strong><span class="desc">— getting a thought out of your head often shrinks it.</span></span><span class="chev">+</span></summary>
+            <p class="tip">That's exactly what the space below is for. Try it once today, even for two minutes.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Question the anxious thought.</strong><span class="desc">— ask what evidence actually supports it.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Ask yourself what you'd tell a friend who had this exact worry. Say the answer out loud.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Set boundaries on your time.</strong><span class="desc">— saying no to one thing is saying yes to your capacity.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Pick one recurring commitment that drains you and decline it this week, just once.</p>
+          </details>
+          <details>
+            <summary><span class="s-main"><strong>Keep one or two honest relationships.</strong><span class="desc">— people you don't have to perform for.</span></span><span class="chev">+</span></summary>
+            <p class="tip">Send one message today that says how you're actually doing, not how you're supposed to be doing.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="release">
+  <div class="panel">
+    <div class="wrap">
+      <div class="release-head">
+        <h2>Say it, then let it go</h2>
+        <p>Write whatever's loud in your head right now — the whole, unfiltered thing. No one reads this. When you're ready, burn it.</p>
+      </div>
+
+      <div class="paper-area">
+        <label for="journalInput" class="visually-hidden">Journal entry</label>
+        <div class="paper" id="paperEl">
+          <textarea id="journalInput" placeholder="Start typing. This is just for you..."></textarea>
+          <div class="burnt-text" id="burntText" aria-hidden="true"></div>
+          <div class="char-band" id="charBand"></div>
+          <div class="flame-layer" id="flameLayer">
+            <span class="flame-tongue t1"></span>
+            <span class="flame-tongue t2"></span>
+            <span class="flame-tongue t3"></span>
+            <span class="flame-tongue t4"></span>
+            <span class="flame-tongue t5"></span>
+          </div>
+          <div class="particles" id="particles"></div>
+          <div class="ash-overlay" id="ashOverlay"></div>
+        </div>
+      </div>
+
+      <div class="release-controls">
+        <button id="burnBtn" type="button">Let it burn</button>
+        <p class="privacy-note">This page has no server. What you type never leaves your browser — burning it just makes the letting-go visible.</p>
+      </div>
+      <p class="release-msg" id="releaseMsg" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>The Reset Space is educational, not a substitute for therapy or medical care.</p>
+    <p>If stress or anxiety are making it hard to function day to day, a therapist, counselor, or doctor can help in ways a web page can't.</p>
+    <p class="signoff">Take the breath. Try one thing. That's enough for today.</p>
+  </div>
+</footer>
+
+<script>
+  /* ---------- shared color helper ---------- */
+  function hexToRgb(hex){ hex = hex.replace('#',''); var n = parseInt(hex,16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function lerpColor(c1,c2,t){
+    var a=hexToRgb(c1), b=hexToRgb(c2);
+    return 'rgb('+Math.round(lerp(a[0],b[0],t))+','+Math.round(lerp(a[1],b[1],t))+','+Math.round(lerp(a[2],b[2],t))+')';
+  }
+  function smoothstep(e0,e1,x){ var t=Math.min(Math.max((x-e0)/(e1-e0),0),1); return t*t*(3-2*t); }
+
+  /* ---------- Scroll-driven sky scene ---------- */
+  (function(){
+    var sunEl = document.getElementById('sunEl');
+    var clouds = [document.getElementById('cloud1'), document.getElementById('cloud2'), document.getElementById('cloud3')];
+    var birds = [document.getElementById('bird1'), document.getElementById('bird2')];
+    var root = document.documentElement;
+    var skyStops = [
+      { p:0,   top:'#3d4356', bottom:'#5b6478', sun:'#9aa3ad' },
+      { p:0.5, top:'#8a7ba0', bottom:'#e8b98d', sun:'#f4d59a' },
+      { p:1,   top:'#372f4a', bottom:'#e8834c', sun:'#f4924f' }
+    ];
+    function interp(p, key){
+      for (var i=0;i<skyStops.length-1;i++){
+        if (p>=skyStops[i].p && p<=skyStops[i+1].p){
+          var t = (p-skyStops[i].p)/(skyStops[i+1].p-skyStops[i].p);
+          return lerpColor(skyStops[i][key], skyStops[i+1][key], t);
+        }
+      }
+      return skyStops[skyStops.length-1][key];
+    }
+    var ticking = false;
+    function update(){
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+      root.style.setProperty('--sky-top', interp(p, 'top'));
+      root.style.setProperty('--sky-bottom', interp(p, 'bottom'));
+      root.style.setProperty('--sun-color', interp(p, 'sun'));
+      var sunY = 62 - 46 * Math.sin(p * Math.PI);
+      var sunX = 12 + p * 68;
+      sunEl.style.top = sunY + '%';
+      sunEl.style.left = sunX + '%';
+      var cloudOpacity = 1 - smoothstep(0, 0.42, p);
+      clouds.forEach(function(c){ c.style.opacity = cloudOpacity; });
+      var birdOpacity = smoothstep(0.3, 0.45, p) * (1 - smoothstep(0.82, 0.95, p));
+      birds.forEach(function(b){ b.style.opacity = birdOpacity; });
+      ticking = false;
+    }
+    function requestTick(){ if (!ticking){ requestAnimationFrame(update); ticking = true; } }
+    window.addEventListener('scroll', requestTick, { passive: true });
+    window.addEventListener('resize', requestTick);
+    update();
+  })();
+
+  /* ---------- Help Ember mini-game ---------- */
+  (function(){
+    var foxSvg = document.getElementById('foxSvg');
+    var foxHolder = document.getElementById('foxHolder');
+    var belly = document.getElementById('foxBelly');
+    var fxLayer = document.getElementById('fxLayer');
+    var caption = document.getElementById('helpCaption');
+    var meterFill = document.getElementById('meterFill');
+    var stressStateEl = document.getElementById('stressState');
+    var helpMsg = document.getElementById('helpMsg');
+    var helpReset = document.getElementById('helpReset');
+    var buttons = document.querySelectorAll('.help-btn');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var stress = 78;
+    var busy = false;
+
+    function stressColor(s){ return lerpColor('#8fae87', '#d9683f', s/100); }
+    function foxBodyColor(s){ return lerpColor('#e0a878', '#b8734a', s/100); }
+    function foxDarkColor(s){ return lerpColor('#c98450', '#8a4c2c', s/100); }
+
+    function render(){
+      var pct = Math.max(0, Math.min(100, stress));
+      meterFill.style.width = pct + '%';
+      meterFill.style.background = stressColor(pct);
+      foxSvg.style.setProperty('--fox-body', foxBodyColor(pct));
+      foxSvg.style.setProperty('--fox-dark', foxDarkColor(pct));
+
+      var label = 'Overwhelmed';
+      if (pct <= 0) label = 'At peace';
+      else if (pct < 15) label = 'Calm';
+      else if (pct < 40) label = 'Settling';
+      else if (pct < 70) label = 'Tense';
+      stressStateEl.textContent = label;
+
+      foxSvg.classList.toggle('stressed', pct >= 55);
+
+      var speed = reduceMotion ? 0 : lerp(1.8, 4.6, 1 - pct/100);
+      belly.style.animationDuration = speed ? speed + 's' : '0s';
+      belly.style.animationPlayState = reduceMotion ? 'paused' : 'running';
+
+      if (pct <= 0){
+        helpMsg.textContent = 'Ember feels calm. Thank you for taking care of her.';
+        helpMsg.classList.add('show');
+        helpReset.classList.add('show');
+      }
+    }
+
+    function spawnFx(kind){
+      var el = document.createElement('span');
+      el.className = 'fx-particle fx-' + kind;
+      if (kind === 'zzz') el.textContent = 'z';
+      if (kind === 'heart') el.textContent = '♥';
+      var x = 30 + Math.random() * 40;
+      var y = 30 + Math.random() * 20;
+      el.style.left = x + '%';
+      el.style.top = y + '%';
+      fxLayer.appendChild(el);
+      setTimeout(function(){ el.remove(); }, 1700);
+    }
+
+    function reduceStress(amount){
+      stress = Math.max(0, stress - amount);
+      render();
+    }
+
+    function setBusy(btn, ms){
+      busy = true;
+      btn.disabled = true;
+      setTimeout(function(){ btn.disabled = false; busy = false; }, ms);
+    }
+
+    var actions = {
+      water: function(btn){
+        setBusy(btn, 1300);
+        for (var i=0;i<3;i++){ (function(i){ setTimeout(function(){ spawnFx('water'); }, i*150); })(i); }
+        caption.textContent = 'Ember takes a drink.';
+        setTimeout(function(){ reduceStress(10); caption.textContent = '\u00A0'; }, 1000);
+      },
+      rest: function(btn){
+        setBusy(btn, 2400);
+        foxSvg.classList.add('resting-eyes');
+        caption.textContent = 'Ember curls up for a moment.';
+        for (var i=0;i<3;i++){ (function(i){ setTimeout(function(){ spawnFx('zzz'); }, 300 + i*350); })(i); }
+        setTimeout(function(){ reduceStress(22); caption.textContent = '\u00A0'; }, 2200);
+      },
+      stretch: function(btn){
+        setBusy(btn, 1200);
+        foxSvg.classList.add('stretching');
+        caption.textContent = 'Ember has a good stretch.';
+        setTimeout(function(){ foxSvg.classList.remove('stretching'); }, 1000);
+        setTimeout(function(){ reduceStress(12); caption.textContent = '\u00A0'; }, 1100);
+      },
+      reassure: function(btn){
+        setBusy(btn, 1400);
+        for (var i=0;i<3;i++){ (function(i){ setTimeout(function(){ spawnFx('heart'); }, i*200); })(i); }
+        caption.textContent = 'Ember relaxes a little.';
+        setTimeout(function(){ reduceStress(10); caption.textContent = '\u00A0'; }, 1200);
+      },
+      breathe: function(btn){
+        var cycles = 3, cycleTime = 6000;
+        setBusy(btn, cycles * cycleTime + 400);
+        var i = 0;
+        function cycle(){
+          if (i >= cycles){ caption.textContent = '\u00A0'; reduceStress(20); return; }
+          belly.style.animation = 'none';
+          belly.style.transition = 'transform 3s ease-in-out';
+          caption.textContent = 'Breathe in with Ember\u2026';
+          requestAnimationFrame(function(){ belly.style.transform = 'scaleY(1.5)'; });
+          setTimeout(function(){
+            caption.textContent = 'Breathe out\u2026';
+            belly.style.transform = 'scaleY(1)';
+            setTimeout(function(){ i++; cycle(); }, 3000);
+          }, 3000);
+        }
+        cycle();
+        setTimeout(function(){
+          belly.style.transition = '';
+          belly.style.transform = '';
+          belly.style.animation = '';
+        }, cycles * cycleTime + 200);
+      }
+    };
+
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if (busy) return;
+        var action = btn.getAttribute('data-action');
+        if (actions[action]) actions[action](btn);
+      });
+    });
+
+    helpReset.addEventListener('click', function(){
+      stress = 70 + Math.round(Math.random() * 18);
+      helpMsg.classList.remove('show');
+      helpReset.classList.remove('show');
+      render();
+    });
+
+    render();
+  })();
+
+  /* ---------- Grounding checklist ---------- */
+  (function(){
+    var list = document.getElementById('groundingList');
+    var progress = document.getElementById('groundProgress');
+    var items = list.querySelectorAll('li');
+    function updateProgress(){
+      var done = list.querySelectorAll('li.done').length;
+      progress.textContent = done + ' of ' + items.length + (done === items.length ? ' noticed — nicely done.' : ' noticed');
+    }
+    items.forEach(function(li){
+      li.addEventListener('click', function(){ li.classList.toggle('done'); updateProgress(); });
+    });
+    updateProgress();
+  })();
+
+  /* ---------- Burn interaction: real fire simulation ---------- */
+  (function(){
+    var textarea = document.getElementById('journalInput');
+    var burntText = document.getElementById('burntText');
+    var burnBtn = document.getElementById('burnBtn');
+    var paperEl = document.getElementById('paperEl');
+    var particlesEl = document.getElementById('particles');
+    var flameLayer = document.getElementById('flameLayer');
+    var charBand = document.getElementById('charBand');
+    var ashOverlay = document.getElementById('ashOverlay');
+    var releaseMsg = document.getElementById('releaseMsg');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var burning = false;
+
+    function showMessage(text){
+      releaseMsg.textContent = text;
+      releaseMsg.classList.add('show');
+      setTimeout(function(){ releaseMsg.classList.remove('show'); }, 4200);
+    }
+
+    function spawnEmber(bottomPct){
+      var p = document.createElement('span');
+      p.className = 'ember-particle';
+      p.style.left = (Math.random() * 94 + 2) + '%';
+      p.style.bottom = bottomPct + '%';
+      p.style.setProperty('--dx', (Math.random() * 30 - 15) + 'px');
+      particlesEl.appendChild(p);
+      setTimeout(function(){ p.remove(); }, 1100);
+    }
+    function spawnSmoke(bottomPct){
+      var p = document.createElement('span');
+      p.className = 'smoke-particle';
+      p.style.left = (Math.random() * 90 + 4) + '%';
+      p.style.bottom = bottomPct + '%';
+      p.style.setProperty('--dx', (Math.random() * 50 - 25) + 'px');
+      particlesEl.appendChild(p);
+      setTimeout(function(){ p.remove(); }, 1900);
+    }
+
+    function runFire(duration){
+      var start = performance.now();
+      var paperHeight = paperEl.getBoundingClientRect().height;
+
+      function frame(now){
+        var elapsed = now - start;
+        var p = Math.min(elapsed / duration, 1);
+        var burnLineY = 100 * (1 - p); // % from top: 100 = nothing burned yet, 0 = fully burned
+
+        var points = ['0% 0%', '100% 0%'];
+        var N = 16;
+        for (var i = N; i >= 0; i--){
+          var x = (i / N) * 100;
+          var jitter = 3.4 * Math.sin(i * 1.3 + now * 0.007) + 1.6 * Math.sin(i * 2.6 - now * 0.012);
+          var y = Math.min(100, Math.max(0, burnLineY + jitter));
+          points.push(x.toFixed(2) + '% ' + y.toFixed(2) + '%');
+        }
+        var clip = 'polygon(' + points.join(',') + ')';
+        burntText.style.clipPath = clip;
+        burntText.style.webkitClipPath = clip;
+
+        var lineTopPx = (burnLineY / 100) * paperHeight;
+        charBand.style.top = Math.max(0, lineTopPx - 16) + 'px';
+        flameLayer.style.top = Math.max(0, lineTopPx - 30) + 'px';
+
+        if (!reduceMotion){
+          if (Math.random() < 0.55) spawnEmber(100 - burnLineY);
+          if (Math.random() < 0.22) spawnSmoke(100 - burnLineY);
+        }
+
+        if (p < 1){
+          requestAnimationFrame(frame);
+        } else {
+          finish();
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function finish(){
+      charBand.classList.remove('active');
+      flameLayer.classList.remove('active');
+      burntText.classList.remove('burning');
+      burntText.textContent = '';
+      burntText.style.clipPath = '';
+      burntText.style.webkitClipPath = '';
+      textarea.value = '';
+      textarea.style.visibility = 'visible';
+      ashOverlay.classList.add('show');
+      setTimeout(function(){ ashOverlay.classList.remove('show'); }, 1500);
+      burning = false;
+      burnBtn.disabled = false;
+      showMessage("It's gone. You can write again whenever you need to.");
+    }
+
+    burnBtn.addEventListener('click', function(){
+      if (burning) return;
+      var text = textarea.value;
+      if (!text.trim()){
+        paperEl.classList.remove('shake');
+        void paperEl.offsetWidth;
+        paperEl.classList.add('shake');
+        showMessage('Write something first, even a few words.');
+        return;
+      }
+
+      burning = true;
+      burnBtn.disabled = true;
+      burntText.textContent = text;
+      textarea.style.visibility = 'hidden';
+      burntText.classList.add('burning');
+      charBand.classList.add('active');
+      flameLayer.classList.add('active');
+
+      if (reduceMotion){
+        burntText.style.transition = 'opacity 0.6s ease';
+        requestAnimationFrame(function(){ burntText.style.opacity = '0'; });
+        setTimeout(function(){
+          burntText.style.opacity = '1';
+          burntText.style.transition = '';
+          finish();
+        }, 650);
+        return;
+      }
+
+      runFire(3000);
+    });
+  })();
+</script>
+
+</body>
+</html>
